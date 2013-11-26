@@ -1,5 +1,7 @@
 package fr.alma.middleware1314.api;
 
+import java.util.List;
+
 /**
  * @author FAGNIEZ Florian and RULLIER Noemie
  * 
@@ -9,6 +11,7 @@ public class User {
 	private String login;
 	private String password;
 	private String mailAddress;
+	private List<Feed> listFeed;
 
 	/**
 	 * @return the login
@@ -53,6 +56,21 @@ public class User {
 	 */
 	public void setMailAddress(String mailAddress) {
 		this.mailAddress = mailAddress;
+	}
+
+	/**
+	 * @return the listFeed
+	 */
+	public List<Feed> getListFeed() {
+		return listFeed;
+	}
+
+	/**
+	 * @param listFeed
+	 *            the listFeed to set
+	 */
+	public void setListFeed(List<Feed> listFeed) {
+		this.listFeed = listFeed;
 	}
 
 }
