@@ -1,5 +1,6 @@
 package fr.alma.middleware1314.api;
 
+
 /**
  * @author FAGNIEZ Florian and RULLIER Noemie
  * 
@@ -36,5 +37,5 @@ public interface IFeed {
 	 *            The url of the {@link Feed}
 	 */
 	public void unsubscribe(String url);
-
+	
 }
