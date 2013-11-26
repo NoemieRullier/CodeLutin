@@ -1,132 +1,99 @@
 package fr.alma.middleware.database.controller;
 
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import fr.alma.middleware.database.DatabaseManager;
+import fr.alma.middleware1314.api.Feed;
+
 
 /**
-* This class provides methods to link PMVs ids from API getTempsParcours and csv file.
-* @author mael
-*/
+ * This class provides an implementation for FeedsController.
+ * He owns methods for add and get Feeds, etc ...
+ * @author Niiner
+ */
 public class FeedsController {
 
-    
+
 	/*@Inject
     private ItineraryController itineraryContr;*/
-    /*@Inject
+	/*@Inject
     private LinkageController linkageContr;*/
 
-    /**
-     * Import all the PMV from the open data of nantes on the database
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws SQLException
-     */
-    public void importPMV() throws FileNotFoundException, IOException, SQLException {
 
-            List<String[]> data = ParserCSV.extractData(System.getProperty("user.dir")+"/localisation_pmv.csv");
-            
-            ItineraryController itineraryContr = new ItineraryController();
-            LinkageController linkageContr = new LinkageController();
+	/**
+	 * Add the Feed in the database.
+	 * @param Feed
+	 */
+	public void add(Feed feed) throws SQLException{
 
-            for (String[] oneData : data) {
-                String id = oneData[0].replace(',', '.');
-                String sens = oneData[1];
-                String indic_temps = oneData[2];
-                String longitude = oneData[3].replace(',', '.');
-                String latitude = oneData[4].replace(',', '.');
+		Statement s = DatabaseManager.getInstance().getConnection().createStatement();
+		String sqlquery = "INSERT INTO Feeds (title, description, url)"
+				+ "VALUES('"+ feed.getTitle() + "', "
+				+ "'" + feed.getDescription() + "', "
+				+ "'" + feed.getUrl() + "') ";
+		System.out.println(sqlquery);
+		s.executeUpdate(sqlquery);
+	}
 
-                PMV pmv = new PMV((int)Float.parseFloat(id),
-                                    sens,
-                                    ("Oui".equals(indic_temps)) ? true : false,
-                                    Float.parseFloat(longitude),
-                                    Float.parseFloat(latitude),
-                                    itineraryContr.getItinerariesByNumero(linkageContr.getPmvToItineraryId((int)Float.parseFloat(id))));
+	/**
+	 * Return all the Feeds from Feed table.
+	 * @return a List of Feeds
+	 * @throws SQLException
+	 */
+	public List<Feed> getAll() throws SQLException{
+		List<Feed> Feeds = new ArrayList();
 
-                this.add(pmv);
-            }
-    }
+		Statement s = DatabaseManager.getInstance().getConnection().createStatement();
+		String sqlquery = "SELECT * FROM Feeds;";
+		ResultSet res = s.executeQuery(sqlquery);
 
-    /**
-* Add the PMV to the database.
-* @param pmv
-*/
-    public void add(PMV pmv) throws SQLException{
+		/* 
+		while(res.next()){
+			Feeds.add(new Feed(res.getString("title"),
+					res.getString("description"),
+					res.getString("url")));
+		}
+		*/
 
-            Statement s = DataBaseManager.getInstance().getCon().createStatement();
-                        int indic = (pmv.isIndic_temps())? 1 : 0;
-            String sqlquery = "INSERT INTO Pmv (numero,sens,indic_temps_parcours,longitude,latitude)"
-                                + "VALUES('"+ pmv.getId() + "', "
-                                + "'" + pmv.getSens() + "', "
-                                + "'" + indic + "', "
-                                + "'" + pmv.getLongitude() + "', "
-                                + "'" + pmv.getLatitude() + "') ";
-            System.out.println(sqlquery);
-            s.executeUpdate(sqlquery);
-    }
+		return Feeds;
+	}
 
-    /**
-* Return all the PMVs from Pmv table.
-* @return a List of PMVs
-* @throws SQLException
-*/
-    public List<PMV> getAll() throws SQLException{
-        List<PMV> pmvs = new ArrayList();
-        
-        ItineraryController itineraryContr = new ItineraryController();
-        LinkageController linkageContr = new LinkageController();
+	/**
+	 * Remove all the Feeds in Feed table.
+	 * @throws SQLException
+	 */
+	public void removeAll() throws SQLException{
+		Statement s = DatabaseManager.getInstance().getConnection().createStatement();
+		String sqlquery = "DELETE FROM Feeds;";
+		s.executeUpdate(sqlquery);
+	}
 
+	/**
+	 * Test this class
+	 * @param args
+	 */
+	public static void main(String args[]){
 
-        Statement s = DataBaseManager.getInstance().getCon().createStatement();
-        String sqlquery = "SELECT * FROM Pmv;";
-        ResultSet res = s.executeQuery(sqlquery);
-
-        while(res.next()){
-                pmvs.add(new PMV(res.getInt("numero"),res.getString("sens"),
-                                    res.getBoolean("indic_temps_parcours"),
-                                    res.getFloat("longitude"),
-                                    res.getFloat("latitude"),
-                                    itineraryContr.getItinerariesByNumero(linkageContr.getPmvToItineraryId(res.getInt("numero")))));
-            }
-
-        return pmvs;
-    }
-
-    /**
-* Remove all the PMVs in Pmv table.
-* @throws SQLException
-*/
-    public void removeAll() throws SQLException{
-        Statement s = DataBaseManager.getInstance().getCon().createStatement();
-        String sqlquery = "DELETE FROM Pmv;";
-        s.executeUpdate(sqlquery);
-    }
-    
-    /**
-* Test this class
-* @param args
-*/
-    public static void main(String args[]){
-
-        System.out.print(System.getProperty("user.dir" ));
-        PMVController pmvContr = new PMVController();
-        try {
-            pmvContr.removeAll();
-        } catch (SQLException ex) {
-            Logger.getLogger(PMVController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            try {
-                pmvContr.importPMV();
-            } catch (SQLException ex) {
-                Logger.getLogger(PMVController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(PMVController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            System.out.println(pmvContr.getAll().size());
-        } catch (SQLException ex) {
-            Logger.getLogger(PMVController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+		System.out.print(System.getProperty("user.dir" ));
+		FeedsController FeedContr = new FeedsController();
+		try {
+			FeedContr.removeAll();
+		} catch (SQLException ex) {
+			Logger.getLogger(FeedsController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		try {
+			System.out.println(FeedContr.getAll().size());
+		} catch (SQLException ex) {
+			Logger.getLogger(FeedsController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
 
 }
