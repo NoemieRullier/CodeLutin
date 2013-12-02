@@ -1,4 +1,4 @@
-package fr.alma.middleware1314.api;
+package api;
 
 /**
  * @author FAGNIEZ Florian and RULLIER Noemie
@@ -15,16 +15,16 @@ public interface IUser {
 	 *            The password
 	 * @param mailAddress
 	 *            The user's mail address
-	 * @return a new {@link User}
 	 */
-	public User signIn(String login, String password, String mailAddress);
+	public void signIn(String login, String password, String mailAddress);
 
 	/**
 	 * Connect an {@link User}
 	 * 
 	 * @param login
+	 * @param password
 	 */
-	public void connection(String login);
+	public boolean connection(String login, String password);
 
 	/**
 	 * Disconnect an {@link User}

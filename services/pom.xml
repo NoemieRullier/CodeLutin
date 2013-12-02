@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>reader-services</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>Reader :: Services</name>
 
@@ -25,12 +25,19 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<!--<dependency> -->
-		<!--<groupId>com.datastax.cassandra</groupId> -->
-		<!--<artifactId>cassandra-driver-core</artifactId> -->
-		<!--<version>1.0.4</version> -->
-		<!--&lt;!&ndash;<version>2.0.0-rc1</version>&ndash;&gt; -->
-		<!--</dependency> -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- <dependency> -->
+		<!-- <groupId>com.datastax.cassandra</groupId> -->
+		<!-- <artifactId>cassandra-driver-core</artifactId> -->
+		<!-- <version>1.0.4</version> -->
+		<!-- &lt;!&ndash;<version>2.0.0-rc1</version>&ndash;&gt; -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>com.h2database</groupId>

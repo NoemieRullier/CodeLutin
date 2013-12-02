@@ -1,4 +1,4 @@
-package fr.alma.middleware1314.services;
+package example;
 
 import java.net.URL;
 import com.sun.syndication.feed.synd.SyndFeed;
