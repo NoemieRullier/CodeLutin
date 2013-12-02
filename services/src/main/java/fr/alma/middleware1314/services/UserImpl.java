@@ -6,8 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import api.IUser;
-import api.User;
+import fr.alma.middleware1314.api.IUser;
+import fr.alma.middleware1314.api.User;
 
 @Stateless
 @Remote(IUser.class)

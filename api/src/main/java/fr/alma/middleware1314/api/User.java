@@ -1,4 +1,4 @@
-package api;
+package fr.alma.middleware1314.api;
 
 import java.io.Serializable;
 import java.util.List;

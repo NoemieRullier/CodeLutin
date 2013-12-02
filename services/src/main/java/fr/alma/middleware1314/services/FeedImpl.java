@@ -8,13 +8,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import api.Feed;
-import api.IFeed;
-import api.User;
-
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
+
+import fr.alma.middleware1314.api.Feed;
+import fr.alma.middleware1314.api.IFeed;
+import fr.alma.middleware1314.api.User;
 
 @Stateless
 @Remote(IFeed.class)
