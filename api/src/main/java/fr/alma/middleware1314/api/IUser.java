@@ -23,8 +23,9 @@ public interface IUser {
 	 * 
 	 * @param login
 	 * @param password
+	 * @return User 
 	 */
-	public boolean connection(String login, String password);
+	public User connection(String login, String password);
 
 	/**
 	 * Disconnect an {@link User}

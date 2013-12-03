@@ -25,6 +25,13 @@ public class Feed implements Serializable {
 	private String url;
 
 	/**
+	 * Default Constructor
+	 */
+	public Feed(){
+		
+	}
+	
+	/**
 	 * @return the id
 	 */
 	@Id

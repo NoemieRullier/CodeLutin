@@ -1,6 +1,7 @@
 package fr.alma.middleware1314.api;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 /**
  * @author FAGNIEZ Florian and RULLIER Noemie
@@ -25,7 +26,7 @@ public interface IFeed {
 	 *            The {@link User}
 	 * @param url
 	 *            The url of the {@link Feed}
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void subscribe(User user, String url)
 			throws IllegalArgumentException, IOException, Exception;
@@ -49,5 +50,18 @@ public interface IFeed {
 	 *            The url of the {@link Feed}
 	 */
 	public void unsubscribe(User user, String url);
+
+	/**
+	 * Display the body of the feed
+	 * 
+	 * @param feed
+	 *            {@link Feed}
+	 * @return The body of the feed
+	 * @throws MalformedURLException 
+	 * @throws IOException 
+	 * @throws FeedException 
+	 * @throws IllegalArgumentException 
+	 */
+	public String displayFeed(Feed feed) throws Exception;
 
 }

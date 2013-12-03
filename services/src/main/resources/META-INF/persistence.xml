@@ -2,7 +2,10 @@
   <persistence-unit name="myapp">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+    <class>fr.alma.middleware1314.api.User</class>
+    <class>fr.alma.middleware1314.api.Feed</class>
     <properties>
+    	<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
     </properties>
   </persistence-unit>
 </persistence>

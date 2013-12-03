@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,6 +29,12 @@ public class User implements Serializable {
 	private String mailAddress;
 	private List<Feed> listFeed;
 
+	/**
+	 * Default Constructor
+	 */
+	public User(){
+	}
+	
 	public User(final String login, final String password,
 			final String mailAddress) {
 		this.login = login;
@@ -103,7 +110,7 @@ public class User implements Serializable {
 	/**
 	 * @return the listFeed
 	 */
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	public List<Feed> getListFeed() {
 		return listFeed;
 	}
