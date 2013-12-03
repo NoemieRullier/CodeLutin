@@ -27,7 +27,7 @@ public class FeedImpl implements IFeed {
 	@Override
 	public void subscribe(User user, Feed feed) {
 		user.addFeed(feed);
-		em.merge(user);
+		em.flush();
 	}
 
 	@Override
@@ -46,12 +46,13 @@ public class FeedImpl implements IFeed {
 			feedToAdd.setTitle(syndFeed.getTitle());
 			feedToAdd.setDescription(syndFeed.getDescription());
 			feedToAdd.setUrl(url);
-			em.persist(feedToAdd);
 			user.addFeed(feedToAdd);
+			em.persist(feedToAdd);
 		} else {
 			user.addFeed(feeds.get(0));
 		}
-		em.merge(user);
+		em.flush();
+		System.out.println("Test list size " + user.getListFeed().size());
 		System.out.println("The user " + user.getLogin()
 				+ " was subscribe to the feed");
 	}
@@ -59,7 +60,7 @@ public class FeedImpl implements IFeed {
 	@Override
 	public void unsubscribe(User user, Feed feed) {
 		user.removeFeed(feed);
-		em.merge(user);
+		em.flush();
 	}
 
 	@Override
@@ -67,22 +68,31 @@ public class FeedImpl implements IFeed {
 		Query query = em
 				.createQuery("from fr.alma.middleware1314.api.Feed feed where feed.url = :feedUrl");
 		query.setParameter("feedUrl", url);
-		List<Feed> feeds = query.getResultList();
+		List<Feed> feeds = (List<Feed>) query.getResultList();
 		Feed feed = feeds.get(0);
 		if (feed != null) {
 			user.removeFeed(feed);
-			em.merge(user);
+			em.flush();
 		}
 	}
 
 	@Override
-	public String displayFeed(Feed feed) throws Exception {
+	public String displayFeeds(User user) throws Exception {
 		System.out.println("Display feed");
-		URL source = new URL(feed.getUrl());
-		SyndFeedInput input = new SyndFeedInput();
-		SyndFeed syndFeed;
-		syndFeed = input.build(new XmlReader(source));
-		return syndFeed.getDescription();
+		Query query = em
+				.createQuery("from fr.alma.middleware1314.api.User user where user.login = :userLogin");
+		query.setParameter("userLogin", user.getLogin());
+		User userBase = (User) query.getSingleResult();
+		System.out.println("Nombre de flux " + userBase.getListFeed().size());
+		String result = "";
+		for (Feed feed : userBase.getListFeed()) {
+			URL source = new URL(feed.getUrl());
+			SyndFeedInput input = new SyndFeedInput();
+			SyndFeed syndFeed;
+			syndFeed = input.build(new XmlReader(source));
+			result += syndFeed.getDescription() + "\n";
+		}
+		return result;
 	}
 
 }

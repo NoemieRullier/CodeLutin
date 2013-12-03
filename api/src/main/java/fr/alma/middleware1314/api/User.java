@@ -1,6 +1,7 @@
 package fr.alma.middleware1314.api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -23,7 +24,6 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -212528778761501136L;
 
 	private int id;
-	// TODO login is unique
 	private String login;
 	private String password;
 	private String mailAddress;
@@ -32,14 +32,16 @@ public class User implements Serializable {
 	/**
 	 * Default Constructor
 	 */
-	public User(){
+	public User() {
+		this.listFeed = new ArrayList<Feed>();
 	}
-	
+
 	public User(final String login, final String password,
 			final String mailAddress) {
 		this.login = login;
 		this.password = password;
 		this.mailAddress = mailAddress;
+		this.listFeed = new ArrayList<Feed>();
 	}
 
 	/**
@@ -110,7 +112,7 @@ public class User implements Serializable {
 	/**
 	 * @return the listFeed
 	 */
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	public List<Feed> getListFeed() {
 		return listFeed;
 	}

@@ -22,15 +22,15 @@ public class Demo {
 		IFeed feedService = (IFeed) context.lookup("ejb:/reader-services-0.1-SNAPSHOT/FeedImpl!fr.alma.middleware1314.api.IFeed");
 
 		// Sign a new user
-		userService.signIn("Nomyx", "Password", "noemie.rullier@etu.univ-nantes.fr");
+		userService.signIn("Nomyx", "Pa$$word", "noemie.rullier@etu.univ-nantes.fr");
 		// Connect the new user
-		User user = userService.connection("Nomyx", "Password");
+		User user = userService.connection("Nomyx", "Pa$$word");
 		// Subscribe the user to a new feed 
 		feedService.subscribe(user, "https://sites.google.com/site/usagymancenis/infos-pratiques/messages/posts.xml");
+		user = userService.connection("Nomyx", "Pa$$word");
+		System.out.println("Mail: "+user.getMailAddress());
 		System.out.println("Size list " + user.getListFeed().size());
-		for (Feed feed : user.getListFeed()){
-			feedService.displayFeed(feed);
-		}
-
+		// Display description of the user's feeds
+		feedService.displayFeeds(user);
 	}
 }

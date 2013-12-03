@@ -24,7 +24,7 @@ public class UserImpl implements IUser {
 		Query query = em
 				.createQuery("from fr.alma.middleware1314.api.User user where user.login = :userLogin");
 		query.setParameter("userLogin", login);
-		List<User> users = query.getResultList();
+		List<User> users = (List<User>) query.getResultList();
 		if (users.size() > 0) {
 			System.out.println("Le login existe deja");
 		} else {
@@ -42,7 +42,7 @@ public class UserImpl implements IUser {
 				.createQuery("from fr.alma.middleware1314.api.User user where user.login = :userLogin and user.password = :userPassword");
 		query.setParameter("userLogin", login);
 		query.setParameter("userPassword", password);
-		List<User> users = query.getResultList();
+		List<User> users = (List<User>) query.getResultList();
 		User user = null;
 		if (users.size() > 0) {
 			user = users.get(0);
@@ -52,7 +52,7 @@ public class UserImpl implements IUser {
 
 	@Override
 	public void disconnection() {
-		// TODO Add boolean in user to know if he's connected ????
+		// TODO
 	}
 
 }

@@ -54,14 +54,14 @@ public interface IFeed {
 	/**
 	 * Display the body of the feed
 	 * 
-	 * @param feed
+	 * @param user
 	 *            {@link Feed}
-	 * @return The body of the feed
-	 * @throws MalformedURLException 
-	 * @throws IOException 
-	 * @throws FeedException 
-	 * @throws IllegalArgumentException 
+	 * @return The body of the feeds
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws FeedException
+	 * @throws IllegalArgumentException
 	 */
-	public String displayFeed(Feed feed) throws Exception;
+	public String displayFeeds(User user) throws Exception;
 
 }
